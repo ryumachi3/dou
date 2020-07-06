@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "no-undef": "error"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2015
+  }
+}

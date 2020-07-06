@@ -1,0 +1,34 @@
+// ======================================================================
+// Layout
+// ======================================================================
+#header{
+  position: fixed;
+  height: 48px;
+  width: 100%;
+  @include mq() {
+    height: 64px;
+    position: fixed;
+  }
+}
+
+#pankuzu{
+  position: relative;
+  height: 24px;    
+}
+
+#main-visual{
+  height: 100%;
+}
+
+#gnav{
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  @include mq() {
+    height: 64px;
+  }   
+}
+
+#form{
+  position: relative;
+}

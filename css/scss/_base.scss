@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+// Museo Sans
+@import url("https://use.typekit.net/xxx7ggr.css");
+// アイコン
+@import url("https://use.fontawesome.com/releases/v5.6.1/css/all.css");
+
+// ==========================================================================
+// Constant
+// ========================================================================== 
+// -----------------------------------------------------------------
+// font
+// -----------------------------------------------------------------
+$dou-font: museo-sans, -apple-system, BlinkMacSystemFont, Roboto, "游ゴシック体", YuGothic, "Yu Gothic Medium", sans-serif;
+
+// -----------------------------------------------------------------
+// color
+// -----------------------------------------------------------------
+$sidebar-ttl: #5AA9E3;
+$logo: #C5E3FC;
+$attention: #FDB4F2;
+$light-line: #DEE4E6;
+$light-txt: #788283;
+$ttl: #626464;
+$more-light-txt: #ACB9BA;
+$bg: #FFFFFF;
+$main-txt: #404040;
+$tag: #ACD7F8;
+$point: #79C1F8;
+$btn: #BADDF8;
+$bg-dark: #FAFAFA;
+
+// -----------------------------------------------------------------
+// constant
+// -----------------------------------------------------------------
+$top-side-margin: 24px;
+$top-side-margin-pc: 32px;
+$main-top-btm-margin: 24px;
+$main-top-btm-margin-pc: 32px;
+$header-logo-size: 32px;
+$header-height: 48px;
+$header-height-pc: 64px;
+$gnav-item-num: 5;
+$section-top-btm-mg: 64px;
+$section-top-btm-mg-pc: 88px;
+$def-link-height: 44px;
+$kadomaru: 4px;
+$tb-width: 560px;
+$pc-width: 960px;
+$contents-width: 620px;
+
+
+// -----------------------------------------------------------------
+// width
+// -----------------------------------------------------------------
+$main-width: 80.533333%;
+
+// -----------------------------------------------------------------
+// breakpoints
+// -----------------------------------------------------------------
+$breakpoints: (
+  'tb': 'screen and (min-width: 560px)',
+  'pc': 'screen and (min-width: 960px)'
+) !default;
+
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+// ==========================================================================
+// base
+// ========================================================================== 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  background: #FFF;
+  color: $main-txt;
+  font-family: $dou-font;
+  height: 100%;  
+}
+
+a {
+  cursor : pointer;
+}

@@ -1,0 +1,230 @@
+// -----------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------
+
+.c-logo{
+}
+
+.c-header-logo{
+  position: fixed;
+  &__link{
+    display: block;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("../img/logo.svg");
+  }
+  &__blog{
+    position: absolute;
+  }
+}
+
+.c-fnav{
+  &__menu{
+    //padding-left: 8px;
+    //padding-right: 8px;
+  }
+}
+
+.c-toggle{
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  position: fixed;
+  &__bar{
+    position: absolute;
+    left: 25%;
+    top: 50%;
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: $light-txt;
+    &--01{
+      transform: translate3d(0, -6px, 0);
+    }
+    &--02{
+      transform: translate3d(0, 0, 0);
+    }
+    &--03{
+      transform: translate3d(0, 6px, 0);
+    }
+  }
+}
+
+.c-sns{
+  display: flex;
+  list-style-type: none;
+  &__link{
+    display: block;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  &--twitter{
+    background-image: url("../img/icon_twitter.svg");
+  }
+  &--instagram{
+    background-image: url("../img/icon_instagram.svg");
+  }
+}
+
+.c-breadcrumbs{
+  list-style-type: none;
+  li{
+    display: inline;
+  }
+}
+
+.c-ttl{
+  position: relative;
+  color: $ttl;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding-bottom: 16px;
+  margin-bottom: 40px;
+  @include mq(){
+    margin-bottom: 64px;
+  }  
+  &--en{
+    font-size: 2.3rem;
+    font-family:museo-sans, sans-serif;
+    font-weight: 900;
+  }
+  &--jp{
+    color: $ttl;
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+  &--bar:after{
+    @include bar;
+  }
+}
+
+.c-ttl-sub{
+  position: relative;
+  color: $ttl;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding-bottom: 16px;
+  &--en{
+    font-size: 1.7rem;
+    font-family:museo-sans, sans-serif;
+    font-weight: 900;
+  }
+  &--jp{
+    color: $ttl;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  &--bar:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 18px;
+    display: block;
+    background-image: linear-gradient(to right, $point, $point 5px, transparent 2px, transparent 2px);
+    background-size: 8px 2px;
+    background-position: top;
+    background-repeat: repeat-x;
+    height: 2px;
+    width: 24px;
+    margin: 0 auto;
+  }  
+}
+
+.c-lead__txt{
+  font-size: 1.5rem;
+  line-height: 2.07;
+}
+
+input[type="submit"],
+input[type="button"] {
+  border-radius: 24px;  // iOSでのデフォルトスタイルへの対策
+}
+
+.c-btn{
+  display: inline-block;
+  border-radius: 24px;
+  text-align: center;
+  text-decoration: none;
+  color: $ttl;
+  font-size: 1.4rem;
+  height: 44px;
+  line-height: 44px;
+  padding-left: 44px;
+  padding-right: 44px;
+  &--normal{
+    background-color: $bg;
+    border: solid 1px $ttl;
+  }
+  &--point{
+    background-color: $btn;
+    box-shadow: 0 1px 2px 0 rgba(40, 71, 80, 0.16);     
+  }
+}
+
+.c-tag{
+  display: inline-block;
+  border-radius: $kadomaru;
+  text-align: center;
+  color: $ttl;
+  font-size: 1.0rem;
+  line-height: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
+  &--normal{
+    background-color: $tag;
+  }  
+}
+
+.c-time{
+  color: $more-light-txt;
+}
+
+.c-share{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  &__item{
+    margin-left: 16px;
+    margin-bottom: 16px;
+  }
+  &__link{
+    display: block;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  &--twitter{
+    background-image: url("../img/share_twitter.svg");
+  }
+  &--facebook{
+    background-image: url("../img/share_facebook.png");
+  }
+  &--hatena{
+    background-image: url("../img/share_hatena.png");
+  }
+  &--line{
+    background-image: url("../img/share_line.png");
+  }  
+}
+
+.c-copyright{
+  display: block;
+  font-size: 0.8rem;
+  color: $more-light-txt;
+  text-align: center;
+}

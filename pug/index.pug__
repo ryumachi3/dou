@@ -1,0 +1,145 @@
+.
+<?php get_header(); ?>
+<?php get_template_part( 'nav' ); ?>
+// main-visual
+#main-visual.is-zidx-30.is-fixed
+  .p-outer-box
+    picture.p-main-frame
+      img.p-main-img(src!="<?php bloginfo('template_url'); ?>/img/main.jpg")
+  transition(name="fade3")
+    .p-main-logo.is-zidx10(:class="[ isDown ? 'is-opacity0' : '' ]",v-if="isLoad")
+      img.p-main-logo__mark.mb16(src!="<?php bloginfo('template_url'); ?>/img/logo.svg")
+      img.p-main-logo__ttl.mb16(src!="<?php bloginfo('template_url'); ?>/img/logo-ttl.svg",alt="DOU")
+      p.p-main-logo__txt Web Designer / Engineer in Okayama
+transition(name="fade05")
+  .p-main-visual-frame.is-zidx10.is-fixed(v-if="!isDown")
+    .p-main-visual-frame__inner
+.p-main-space( ref="mainSpace" )
+// contents 
+#contents
+  section.p-lead.pt64.pb64( ref="lead")
+    transition(name="slide-fade")
+      .p-lead__contents(v-if="isDown")
+        h2.c-ttl.c-ttl--en.p-lead__ttl.mb24
+          span.p-lead__ttl--obi Design Engineered to Touch Your Mind.
+        p.c-lead__txt.p-lead__txt.mb24
+          span.p-lead__txt--obi いいデザインってなんだろう。
+          br
+          span.p-lead__txt--obi WEBページで伝える。
+          br
+          span.p-lead__txt--obi グラフィックで伝える。
+          br
+          span.p-lead__txt--obi 動画で伝える。
+          br
+          span.p-lead__txt--obi 文章で伝える。
+          br
+          span.p-lead__txt--obi いいデザインって、ちゃんと伝わることだ。
+        p.c-lead__txt.p-lead__txt.mb24
+          span.p-lead__txt--obi でも、それだけでいいんだっけ。
+          br
+          span.p-lead__txt--obi Webページへ訪れた人が、
+          br
+          span.p-lead__txt--obi アクションを起こす。
+          br
+          span.p-lead__txt--obi グラッフィックを見た人が、
+          br
+          span.p-lead__txt--obi 動画を見た人が、感動する。
+          br
+          span.p-lead__txt--obi 文章を読んだ人の、心が動く。
+          br
+          span.p-lead__txt--obi いいデザインって人を動かすことだ。      
+        p.c-lead__txt.p-lead__txt
+          span.p-lead__txt--obi 人に伝わるデザインを。
+          br
+          span.p-lead__txt--obi 心を動かすデザインを。
+  section.p-service.u-bg-dark.pt64.pb64
+    h2.c-ttl.c-ttl--jp.c-ttl--bar.mb40
+      | できること
+    article.p-service__box.pt32.pb32.mb24
+      h3.p-service__subttl
+        | Webページ制作
+      img.p-service__img(src!="<?php bloginfo('template_url'); ?>/img/icon_pc.png",width="120",height="120",alt="Web design")
+      p.p-service__txt
+        | デザイン〜コーディングまでおまかせください。依頼者の方の思いをロゴ〜Webまで一貫したデザインで形にするのが得意です。
+    article.p-service__box.pt32.pb32.mb24
+      h3.p-service__subttl
+        | ロゴ制作
+      img.p-service__img(src!="<?php bloginfo('template_url'); ?>/img/icon_a.png",width="120",height="120",alt="Logo design")
+      p.p-service__txt
+        | 名刺やWebサイトに欠かせないロゴの制作が得意です。その他のグラフィックデザインについてもご相談ください。
+    article.p-service__box.pt32.pb32
+      h3.p-service__subttl
+        | 動画制作
+      img.p-service__img(src!="<?php bloginfo('template_url'); ?>/img/icon_movie.png",width="120",height="120",alt="Movie design")
+      p.p-service__txt
+        | 写真、動画、グラフィックを編集してムービーを作成します。ウェデイングに欠かせないプロフィールムービー等の制作が得意です。
+  section.p-works.u-bg.pt64.pb64
+    h2.c-ttl.c-ttl--jp.c-ttl--bar.mb40
+      | Works
+    ul.p-works__ul.mb32
+      li.mb24
+        a.p-works__link
+          img.p-works__img(src!="<?php bloginfo('template_url'); ?>/img/OKURO-share.png").mb12
+          h3.p-works__ttl.mb8
+            | OKURO 
+          p.p-works__txt
+            | 2019 / Logo
+      li.mb24
+        a.p-works__link
+          img.p-works__img(src!="<?php bloginfo('template_url'); ?>/img/DOU-share.png").p-works__img--border.mb12
+          h3.p-works__ttl.mb8
+            | DOU
+          p.p-works__txt
+            | 2019 / Logo,Web Design,Coding
+      li
+        a.p-works__link
+          img.p-works__img(src!="<?php bloginfo('template_url'); ?>/img/works-badge-share.png").mb12
+          h3.p-works__ttl.mb8
+            | badge
+          p.p-works__txt
+            | 2018 / Logo,Web Design,Coding
+    p
+      a.c-btn.c-btn--normal もっと見る
+  section.p-blog.u-bg-dark.pt64.pb64
+    h2.c-ttl.c-ttl--en.c-ttl--bar.mb40
+      | Blog
+    ul.p-blog__ul.mb32
+      li.mb24
+        a.p-blog__card.pt16.pb16
+          img(src!="<?php bloginfo('template_url'); ?>/img/design-dialy.png").p-blog__img
+          .p-blog__right
+            .p-blog__supple
+              .c-tag.c-tag--normal Webデザイン
+              time.c-time.p-blog__time(datetime='2019-04-19T11:54:45+09:00') 2019/04/19
+            h3.p-blog__ttl.mt8
+              | １日１回言語化するスキルを身につけるデザイン観察日記という習慣 
+      li.mb24
+        a.p-blog__card.pt16.pb16
+          img(src!="<?php bloginfo('template_url'); ?>/img/no-img.png").p-blog__img
+          .p-blog__right
+            .p-blog__supple
+              .c-tag.c-tag--normal Webデザイン
+              time.c-time(datetime='2019-04-18T11:54:45+09:00') 2019/04/18
+            h3.p-blog__ttl.mt8
+              | インスタをポートフォリオとして使ってみる
+      li.mb24
+        a.p-blog__card.mb.pt16.pb16
+          img(src!="<?php bloginfo('template_url'); ?>/img/no-img.png").p-blog__img
+          .p-blog__info
+            .p-blog__supple
+              .c-tag.c-tag--normal エッセイ
+              time.c-time(datetime='2019-04-18T11:54:45+09:00') 2019/04/17
+            h3.p-blog__ttl.mt8
+              | この気持ちを語る相手がいないから書くしかないのだ
+    p
+      a.c-btn.c-btn--normal もっと見る
+  section.p-contact.u-bg.pt64.pb64
+    h2.c-ttl.c-ttl--en.c-ttl--bar.mb40
+      | Contact
+    p.p-contact__txt.mb32
+      | 制作のご依頼・ご相談やこのサイトに関するお問い合わせはこちらから。
+    p
+      a.c-btn.c-btn--point.p-contact__btn お問い合わせフォームへ
+
+.
+  <?php get_footer(); ?>

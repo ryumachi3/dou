@@ -1,0 +1,35 @@
+header#header.is-zidx20(:class="[isTopPage ? '' : 'p-header--white',isBreadcrumbDown || isPC && !isTopPage ? 'p-header--border' : '']")
+  h1.c-header-logo.p-header-logo.is-zidx10(:class="[ isDown || isMenu && !isPC ? 'is-opacity1' : '' ]")
+    a.c-header-logo__link(href="/")
+      img.c-header-logo__blog.p-header-logo__blog(src!="<?php bloginfo('template_url'); ?>/img/logo_blog.svg",width="39",height="21",alt="ドウ",:class="[ isBlogPage ? 'is-opacity1' : '' ]")
+  .c-toggle.p-toggle(v-on:click="isMenu=true" v-if="!isPC")
+    .c-toggle__bar.c-toggle__bar--01
+    .c-toggle__bar.c-toggle__bar--02
+    .c-toggle__bar.c-toggle__bar--03
+  nav#gnav.p-gnav(v-if="isMenu && (!isPC || isPC && isTopPage && !isDown || isPC && !isTopPage)",:class="[ isMenu ? 'is-opacity1' : '' ]")
+    ul.p-gnav__menu
+      li.p-gnav__menu__item
+        a.p-gnav__menu__link(href="/") Home
+      li.p-gnav__menu__item
+        a.p-gnav__menu__link(href!="<?php echo get_post_type_archive_link( 'works' ); ?>") Works
+      li.p-gnav__menu__item
+        a.p-gnav__menu__link(href!="<?php echo get_post_type_archive_link( 'blog' ); ?>") Blog
+      li.p-gnav__menu__item
+        a.p-gnav__menu__link(href!="<?php echo home_url( '/about' ); ?>") About
+      li.p-gnav__menu__item
+        a.p-gnav__menu__link(href!="<?php echo home_url( '/contact' ); ?>") Contact
+    .p-gnav__close(v-on:click="isMenu=false" v-if="!isPC")
+      a.p-gnav__close__link Close
+  ul.c-sns.p-header__sns(:class="[isDown || isMenu && !isPC ? 'p-header__sns--menu' : 'p-header__sns--top', isDown  && !isMenu ? '' : 'is-flex']" v-if="!(isDown && isPC)")
+    li.c-sns__01
+      a.c-sns__link.c-sns--instagram(href="https://www.instagram.com/ryumachi3")
+    li.c-sns__02
+      a.c-sns__link.c-sns--twitter(href="https://twitter.com/ryumachi3")
+. 
+  <?php
+  if (function_exists('bcn_display') && !is_front_page()) {
+    echo '<ul class="c-breadcrumbs p-breadcrumbs">';
+      bcn_display_list();
+    echo '</ul>';
+  }
+  ?>

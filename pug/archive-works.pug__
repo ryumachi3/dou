@@ -1,0 +1,32 @@
+.
+<?php get_header(); ?>
+<?php get_template_part( 'nav' ); ?>
+// contents 
+#contents
+  section.p-works.u-bg.pt64.pb64
+    h2.c-ttl.c-ttl--jp.c-ttl--bar.mb40
+      | Works
+    ul.p-works__ul.mb32
+      li.mb24
+        a.p-works__link
+          img.p-works__img(src!="<?php bloginfo('template_url'); ?>/img/OKURO-share.png").mb12
+          h3.p-works__ttl.mb8
+            | OKURO 
+          p.p-works__txt
+            | 2019 / Logo
+      li.mb24
+        a.p-works__link
+          img.p-works__img(src!="<?php bloginfo('template_url'); ?>/img/DOU-share.png").p-works__img--border.mb12
+          h3.p-works__ttl.mb8
+            | DOU
+          p.p-works__txt
+            | 2019 / Logo,Web Design,Coding
+      li
+        a.p-works__link(href="/badge")
+          img.p-works__img(src!="<?php bloginfo('template_url'); ?>/img/works-badge-share.png").mb12
+          h3.p-works__ttl.mb8
+            | badge
+          p.p-works__txt
+            | 2018 / Logo,Web Design,Coding
+.
+<?php get_footer(); ?>

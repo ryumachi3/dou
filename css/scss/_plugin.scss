@@ -1,0 +1,118 @@
+// -----------------------------------------------------------------
+// plugin
+// -----------------------------------------------------------------
+.p-breadcrumbs{
+  font-size: 1.1rem;
+  color: $light-txt;
+  padding-top: $header-height;
+  padding-left: $top-side-margin - ($header-logo-size / 2);
+  padding-right: $top-side-margin - ($header-logo-size / 2);
+  line-height: 24px;
+  @include mq() {
+    padding-top: $header-height-pc;
+    padding-left: $top-side-margin-pc - ( $header-logo-size / 2 );
+  }
+  .home{
+    color: $light-txt;
+  }
+  .post{
+    color: $light-txt;
+  }
+  .current-item{
+    font-weight: 600;
+  }
+  li::before{
+    font-size: 1.2rem;
+    font-weight: 300;
+    content: '>';
+    margin: 0 8px;
+  }
+  li:first-child::before{
+    content: ''; 
+    margin: 0;
+  }
+}
+
+.p-pagenavi{
+  font-family:museo-sans, sans-serif;
+  color: $ttl;
+  text-align:center;
+  margin-top: 32px;
+  &__pages{
+    display: none;
+  }
+
+  &__current,&__page,&__extend,&__prev,&__next,&__first,&__last{
+    text-decoration: none;
+    margin-left: 8px;
+    font-size: 14px;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    color: $ttl;
+  }
+  
+  &__page{
+  }
+  
+  &__current{
+    border-radius: 50%;
+    background: $btn;
+  }
+    
+  &__prev,&__next,&__first,&__last{
+    color: $ttl;
+    margin-left: 0;    
+  }
+  
+  &--smaller{
+    margin-left: 0;    
+  }
+}
+
+.wpcf7-text, .wpcf7-textarea{
+	box-sizing: border-box;
+	font-size: 1.5rem!important;
+	padding: 8px!important;
+	width: 100%;
+	border-radius: 2px;
+	border: solid 1px $light-line;
+	background: $bg-dark;
+}
+
+.wpcf7-submit{
+  @extend .c-btn;
+  @extend .c-btn--point;
+  @extend .p-contact__btn;
+}
+
+.wpcf7-not-valid-tip{
+  font-size: 1.2rem!important;
+  text-align: left;
+  line-height: 2;
+}
+
+.wpcf7-response-output{
+  border: none!important;
+  font-size: 1.5rem!important;
+  margin: 0!important;
+  margin-top: 40px!important;
+  padding: 0!important;
+  text-align: left;
+  line-height: 2;
+  color: red;
+}
+
+div.wpcf7-mail-sent-ok{
+  color: $main-txt;  
+}
+
+div#ez-toc-container ul li {
+  line-height: 1.6  !important;
+  padding: 8px 0 ;  
+}
+
+#ez-toc-container a {
+  line-height: 1.6  !important;
+}
