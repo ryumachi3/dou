@@ -74,7 +74,7 @@
         ?>
       </div>
     </div>
-    <p class="p-works-ctl__back"><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'works' ); ?>">一覧へ戻る</a></p>
+    <p class="p-works-ctl__back"><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'exhibition' ); ?>">一覧へ戻る</a></p>
   </div>
 </div>
 <?php get_footer(); ?>
