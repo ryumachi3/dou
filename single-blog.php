@@ -15,7 +15,7 @@
               echo $term->name;
             ?>
           </div>
-          <h2 class="p-blog-dt__ttl mt8 mb8"><?php the_title(); ?></h2>
+          <h1 class="p-blog-dt__ttl mt8 mb8"><?php the_title(); ?></h1>
           <header class="p-blog-dt__header mb40">
             <?php $blogusers = get_users(); ?>
             <a href="<?php echo $blogusers[0]->user_url ?>" class="p-blog-dt__header__author-link">

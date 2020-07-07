@@ -47,6 +47,7 @@ new Vue({
     isTopPage: false,
     isWorksPage: false,
     isBlogPage: false,
+    isExhibitionPage: false,
     isAboutPage: false,
     isContactPage: false,
     isBreadcrumbDown: false,
@@ -86,6 +87,8 @@ new Vue({
         this.isWorksPage = true;
       } else if (location.pathname.substr(0,5) == '/Blog' || location.pathname.substr(0,5) == '/blog' ) {
         this.isBlogPage = true;
+      } else if (location.pathname.substr(0,11) == '/Exhibition' || location.pathname.substr(0,11) == '/exhibition' ) {
+        this.isExhibitionPage = true;
       } else if (location.pathname.substr(0,6) == '/About' || location.pathname.substr(0,6) == '/about' ) {
         this.isAboutPage = true;
       } else if (location.pathname.substr(0,8) == '/Contact' || location.pathname.substr(0,8) == '/contact' ) {

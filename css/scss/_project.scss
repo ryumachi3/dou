@@ -60,7 +60,7 @@
   }
   &__menu{
     font-size: 1.7em;
-    letter-spacing: 0.03em;  
+    letter-spacing: 0.03em;
     margin-top: $header-height;
     margin-left: $top-side-margin - ( $header-logo-size / 2 ) + 8px;
     margin-right: $header-height;
@@ -589,7 +589,12 @@
   
   &__contents{
     margin-left: $top-side-margin;
-    margin-right: $top-side-margin;        
+    margin-right: $top-side-margin;
+
+    a:not([class]){
+      color: $point;
+    }
+    
     @include mq(tb) {
       max-width: $tb-width - $top-side-margin * 2;;
       margin-left: auto;

@@ -3,12 +3,12 @@
 <!-- contents -->
 <div id="contents">
   <section class="p-works u-bg">
-    <h1 class="c-ttl c-ttl--jp c-ttl--bar">Works</h1>
+    <h1 class="c-ttl c-ttl--jp c-ttl--bar">Exhibition</h1>
     <?php 
       $args = array(
       'paged'     => $paged,
-      'post_type' => 'Works',
-      'posts_per_page' => 101,
+      'post_type' => 'Exhibition',
+      'posts_per_page' => 10,
       'post_status' => 'publish',        
       ); 
       $my_query = new WP_Query($args);
@@ -27,17 +27,7 @@
           <div class="p-works__ttls">
             <h2 class="p-works__ttl mb8"><?php the_title(); ?></h2>
             <header class='p-works__header'>
-              <time class='p-works__header__time' datetime='<?php the_time('Y') ?>'><?php the_time('Y') ?></time> / 
-              <div class="p-works__header__category">
-                <?php
-                  foreach((get_the_category()) as $cat){
-                    echo $cat->cat_name;
-                    if ($cat != end(get_the_category())) {
-                       echo ',';
-                    }
-                  }
-                ?>
-              </div>
+              <time class='p-works__header__time' datetime='<?php the_time('Y-m-d') ?>'><?php the_time('Y-m-d') ?></time>
             </header>
           </div>
         </a>

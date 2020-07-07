@@ -158,7 +158,46 @@
     ?>      
     <p><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'blog' ); ?>">もっと見る</a></p>
   </section>
-  <section class="p-contact u-bg pt64 pb64">
+  <section class="p-works p-works--top u-bg pt64 pb64">
+    <h2 class="c-ttl c-ttl--en c-ttl--bar mb40">Exhibition</h2>
+    <?php 
+      $args = array(
+      'paged'     => $paged,
+      'post_type' => 'Exhibition',
+      'posts_per_page' => 3,
+      'post_status' => 'publish'
+      ); 
+      $my_query = new WP_Query($args);
+      if ($my_query->have_posts()) :
+    ?>
+    <ul class="p-works__ul p-works__ul--top mb32">
+      <?php
+        $i = 1;
+        while ($my_query->have_posts()) : $my_query->the_post();
+        // ここに記事を表示するコードを書く
+      ?>
+      <li class="p-works__list  p-works__list--top p-works__list--<?php echo sprintf('%02d', $i); ?>">
+        <fade-in>
+        <a class="p-works__link p-works__link--top" href="<?php echo get_post_permalink(); ?>">
+          <?php the_post_thumbnail(array(600, 300), array( 'class' => 'p-works__img mb12' ));?>
+          <h3 class="p-works__ttl mb8"><?php the_title(); ?></h3>
+          <header class='p-works__header'>
+            <time class='p-works__header__time' datetime='<?php the_time('Y-m-d') ?>'><?php the_time('Y-m-d') ?></time> 
+          </header>
+        </a>
+        </fade-in>  
+      </li> 
+      <?php
+        $i++;
+        endwhile;
+      ?>
+    </ul>
+    <?php
+      wp_reset_query();endif;
+	  ?>
+    <p><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'exhibition' ); ?>">もっと見る</a></p>
+  </section>
+  <section class="p-contact u-bg-dark pt64 pb64">
     <h2 class="c-ttl c-ttl--en c-ttl--bar mb40">Contact</h2>
     <p class="p-contact__txt mb32">制作のご依頼・ご相談やこのサイトに関するお問い合わせはこちらから。</p>
     <p><a class="c-btn c-btn--point p-contact__btn" href="<?php echo home_url( '/contact' ); ?>">お問い合わせフォームへ</a></p>

@@ -4,7 +4,7 @@
 <!-- contents -->
 <div id="contents">
   <section class="p-blog">
-      <h2 class="c-ttl c-ttl--en c-ttl--bar">Blog</h2>
+      <h1 class="c-ttl c-ttl--en c-ttl--bar">Blog</h1>
       <div class="p-blog__wrap">
         <div class="p-blog__main">
           <?php 
@@ -38,7 +38,7 @@
                     echo $term->name;
                   ?>
                 </div>
-                <h3 class="p-blog-pick__ttl"><?php the_title(); ?></h3>
+                <h2 class="p-blog-pick__ttl"><?php the_title(); ?></h2>
                 <time class="c-time p-blog-pick__time" datetime="<?php the_time('Y/m/d') ?>"><?php the_time('Y/m/d') ?></time>
               </a>
             </li>
@@ -48,7 +48,7 @@
             ?>
           </ul>
           <?php endif; ?>
-          <h3 class="c-ttl-sub c-ttl-sub--jp c-ttl-sub--bar mb32">新着記事</h3>
+          <p class="c-ttl-sub c-ttl-sub--jp c-ttl-sub--bar mb32">新着記事</p>
           <ul class="p-blog__ul mb32">
             <?php 
               $args = array(
@@ -79,7 +79,7 @@
                     </div>
                     <time class="c-time p-blog__time" datetime="<?php the_time('Y/m/d') ?>"><?php the_time('Y/m/d') ?></time>
                   </div>
-                  <h3 class="p-blog__ttl mt8"><?php the_title(); ?></h3>
+                  <h2 class="p-blog__ttl mt8"><?php the_title(); ?></h2>
                 </div>
               </a>
             </li>
@@ -94,7 +94,7 @@
       </div>
       <div class="p-sidebar">
         <div class="p-sidebar__box p-category mb32">
-          <h4 class="p-sidebar__ttl p-sidebar__ttl--category">カテゴリー</h4>
+          <h2 class="p-sidebar__ttl p-sidebar__ttl--category">カテゴリー</h2>
           <div class="p-sidebar__contents">
             <ul class="p-sidebar__lists pt16 pb16">
               <?php 
@@ -112,7 +112,7 @@
           </div>
         </div>
         <div class="p-sidebar__box p-profile">
-          <h4 class="p-sidebar__ttl p-sidebar__ttl--profile">DOUについて</h4>
+          <h2 class="p-sidebar__ttl p-sidebar__ttl--profile">DOUについて</h2>
           <div class="p-sidebar__contents pt24 pb24">
             <div class="p-profile__contents">
             <div class="p-profile__img">

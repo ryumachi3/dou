@@ -18,10 +18,7 @@
           <?php endif; ?>
           </h1>
           <header class="p-works-dt__header">
-            <time class='p-works-dt__header__time mb8' datetime='<?php the_time('Y') ?>'><?php the_time('Y') ?></time>
-            <div class="p-works-dt__header__category">
-              <?php the_category(' / '); ?>
-            </div>
+            <time class='p-works-dt__header__time mb8' datetime='<?php the_time('Y-m-d') ?>'><?php the_time('Y-m-d') ?></time>
           </header>
           <div class="p-works-dt__contents">
             <?php the_content(); ?>
@@ -29,17 +26,7 @@
           <dl class="p-works-dt__spec">
             <?php
               $fields = array(
-                "summary" => get_field('summary'),
-                "objective" => get_field('objective'),
-                "design-point" => get_field('design-point'),
-                "coding-point" => get_field('coding-point'),
-                "scope" => get_field('scope'),
-                "responsive" => get_field('responsive'),
-                "period" => get_field('period'),
-                "tool" => get_field('tool'),
-                "cms" => get_field('cms'),
-                "language" => get_field('language'),
-                "url" => get_field('url')
+                "time" => get_field('time'),
               );
             
               foreach ($fields as $key=>$field):

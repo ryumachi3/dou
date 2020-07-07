@@ -468,7 +468,7 @@ input[type="button"] {
 }
 
 .p-header__sns--menu {
-  top: 276px;
+  top: 320px;
   left: 8px;
 }
 
@@ -1206,6 +1206,10 @@ input[type="button"] {
 .p-works-dt__contents {
   margin-left: 24px;
   margin-right: 24px;
+}
+
+.p-works-dt__contents a:not([class]) {
+  color: #79C1F8;
 }
 
 @media screen and (min-width: 560px) {
