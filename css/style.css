@@ -1048,6 +1048,8 @@ input[type="button"] {
   font-family: museo-sans, -apple-system, BlinkMacSystemFont, Roboto, "游ゴシック体", YuGothic, "Yu Gothic Medium", sans-serif;
   font-weight: 700;
   color: #626464;
+  -webkit-font-feature-settings: "palt";
+          font-feature-settings: "palt";
 }
 
 @media screen and (min-width: 960px) {
@@ -1117,6 +1119,8 @@ input[type="button"] {
   font-family: museo-sans, sans-serif;
   font-weight: 900;
   color: #626464;
+  -webkit-font-feature-settings: "palt";
+          font-feature-settings: "palt";
 }
 
 .p-works-dt__site-link {

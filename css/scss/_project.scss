@@ -458,6 +458,7 @@
     font-family: $dou-font;
     font-weight: 700;
     color:$ttl;
+    font-feature-settings: "palt";
     @include mq() {
       font-size: 1.6rem;
     }
@@ -514,6 +515,7 @@
     font-family:museo-sans, sans-serif;
     font-weight: 900;
     color:$ttl;
+    font-feature-settings: "palt";
   }
   &__site-link{
     text-decoration: none;
