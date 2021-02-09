@@ -611,7 +611,6 @@ input[type="button"] {
   height: 100vh;
   padding-right: 17px;
   padding-top: 17px;
-  -webkit-writing-mode: vertical-rl;
   -ms-writing-mode: tb-rl;
   writing-mode: vertical-rl;
 }
@@ -741,7 +740,6 @@ input[type="button"] {
   font-size: 1.1rem;
   margin-bottom: 8px;
   color: #788283;
-  -webkit-writing-mode: vertical-rl;
   -ms-writing-mode: tb-rl;
   writing-mode: vertical-rl;
 }
@@ -1048,8 +1046,7 @@ input[type="button"] {
   font-family: museo-sans, -apple-system, BlinkMacSystemFont, Roboto, "游ゴシック体", YuGothic, "Yu Gothic Medium", sans-serif;
   font-weight: 700;
   color: #626464;
-  -webkit-font-feature-settings: "palt";
-          font-feature-settings: "palt";
+  font-feature-settings: "palt";
 }
 
 @media screen and (min-width: 960px) {
@@ -1119,8 +1116,7 @@ input[type="button"] {
   font-family: museo-sans, sans-serif;
   font-weight: 900;
   color: #626464;
-  -webkit-font-feature-settings: "palt";
-          font-feature-settings: "palt";
+  font-feature-settings: "palt";
 }
 
 .p-works-dt__site-link {
@@ -1799,6 +1795,14 @@ input[type="button"] {
   }
 }
 
+.p-blog-dt h2:not([class]) {
+  margin-top: 40px;
+  margin-bottom: 24px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
 .p-blog-dt h3:not([class]) {
   margin-top: 40px;
   margin-bottom: 24px;
@@ -1829,6 +1833,17 @@ input[type="button"] {
   line-height: 2.0;
 }
 
+.p-blog-dt li:not([class]) {
+  margin-bottom: 8px;
+  margin-left: 20px;
+  font-size: 1.5rem;
+  line-height: 2.0;
+}
+
+.p-blog-dt ul:not([class]) {
+  margin-bottom: 16px;
+}
+
 .p-blog-dt__p {
   margin-bottom: 16px;
   font-size: 1.5rem;
@@ -1853,13 +1868,13 @@ input[type="button"] {
   margin-bottom: 24px;
 }
 
-.p-blog-dt blockquote:not([class]) {
+.p-blog-dt blockquote {
   padding: 24px;
   background-color: #FAFAFA;
   margin-bottom: 16px;
 }
 
-.p-blog-dt blockquote:not([class]) p {
+.p-blog-dt blockquote p {
   margin-bottom: 16px;
   line-height: 2.0;
   font-size: 1.4rem;

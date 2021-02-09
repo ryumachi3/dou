@@ -11,13 +11,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.26.14",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-plumber": "^1.2.1",
     "gulp-pug": "^4.0.1",
     "gulp-rename": "^1.4.0",
-    "gulp-sass": "^4.0.2"
+    "gulp-sass": "^4.1.0"
   },
   "dependencies": {
     "eslint": "^5.16.0"
