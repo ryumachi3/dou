@@ -27,7 +27,7 @@
             ?></a>
             <div class="p-blog-dt__header__txt">
               <a href="<?php echo $blogusers[0]->user_url ?>" class="p-blog-dt__header__author-name mb8"><?php echo $blogusers[0]->display_name; ?></a>
-              <time class='p-blog-dt__header__time' datetime='<?php the_time('Y/m/d H:i') ?>'><?php the_time('Y/m/d H:i') ?></time>
+              <time class='p-blog-dt__header__time' datetime='<?php the_time('Y/m/d H:i') ?>'><?php the_time('Y/m/d') ?></time>
             </div>
           </header>
           <div class="p-blog-dt__content mb40">
