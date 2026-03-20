@@ -1007,6 +1007,7 @@
 }
 
 .p-blog-dt{
+  padding-top: $header-height;
   margin-bottom: 40px;
   @include mq(tb) {
     max-width: $tb-width;
@@ -1014,6 +1015,7 @@
     margin-right: auto;
   }  
   @include mq(){
+    padding-top: $header-height-pc;
     max-width: $contents-width;
     margin-bottom: 88px;
   }
@@ -1549,6 +1551,341 @@
   }
 }
 
+.p-diary {
+  text-align: center;
+  padding-right: $top-side-margin;
+  padding-left: $top-side-margin;
+  @include mq(tb) {
+    max-width: $tb-width;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @include mq() {
+    max-width: 1440px;
+    padding-right: $top-side-margin-pc;
+    padding-left: $top-side-margin-pc;
+  }
+  &--top {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  &__wrap {
+    text-align: left;
+    @include mq(tb) {
+      max-width: $tb-width - $top-side-margin * 2;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @include mq() {
+      max-width: $contents-width;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    &--top {
+      @include mq() {
+        max-width: $pc-width - $top-side-margin-pc * 2;
+      }
+    }
+    &--archive {
+      @include mq(tb) {
+        max-width: 100%;
+      }  
+      @include mq() {
+        max-width: 1440px;
+      }
+    }
+  }
+  &__notebook {
+    background-color: $bg;
+    border-radius: $kadomaru;
+    border: solid 1px $light-line;
+    overflow: hidden;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    // 罫線（コンテナ全体に横断）
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 29px,
+      rgba(222, 228, 230, 0.35) 29px,
+      rgba(222, 228, 230, 0.35) 30px
+    );
+    @include mq(tb) {
+      columns: 2;
+      column-gap: 0;
+      column-fill: balance; // コンテンツを左右均等に分配、左から埋まって折り返す
+      column-rule: solid 1px $light-line;
+    }
+  }
+  &__entry {
+    break-inside: avoid;
+    padding: 32px;
+    // タイトル部分を白でマスクしてその下から罫線
+    background: linear-gradient(to bottom, $bg 60px, transparent 60px);
+    border-bottom: solid 1px $light-line;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  &__book {
+    overflow: hidden;
+    border-radius: $kadomaru;
+    border-bottom: solid 1px #DEE4E6;
+    @include mq(tb) {
+      display: flex;
+      flex-direction: row-reverse; // [0]=new → right, [1]=prev → left
+      max-width: $pc-width - $top-side-margin-pc * 2;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media screen and (min-width: 1200px) {
+      background-color: #fcfcfc;
+    }
+
+    &--archive {
+      @include mq(tb) {
+        max-width: 1440px;
+        display: block; // 1200px未満は1列
+      }
+      @media screen and (min-width: 1200px) {
+        display: flex;
+      }
+    }
+  }
+  &__page {
+    background-color: $bg;
+    padding: 24px;
+    text-align: left;
+    min-height: 300px; // 10行分
+    // タイトル部分(〜58px)は白でマスク、その下から罫線スタート
+    background-image:
+      linear-gradient(to bottom, $bg 58px, transparent 58px),
+      repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 29px,
+        rgba(222, 228, 230, 0.35) 29px,
+        rgba(222, 228, 230, 0.35) 30px
+      );
+    &:not(:last-child) {
+      border-bottom: solid 1px #DEE4E6;
+    }
+    @include mq(tb) {
+      padding: 40px 32px 32px 32px;
+      // padding増加分だけマスク領域を広げる
+      background-image:
+        linear-gradient(to bottom, $bg 66px, transparent 66px),
+        repeating-linear-gradient(
+          to bottom,
+          transparent,
+          transparent 29px,
+          rgba(222, 228, 230, 0.35) 29px,
+          rgba(222, 228, 230, 0.35) 30px
+        );
+    }
+    @media screen and (min-width: 1200px) {
+      margin-bottom: 0;
+      width: 50%;
+      &--prev {
+        border-right: solid 1px $light-line;
+      }
+    }
+    // TOPページのSP: 最新1件だけ表示
+    .p-diary--top &--prev {
+      display: none;
+      @include mq(tb) {
+        display: block;
+      }
+    }
+  }
+  &__card {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 24px;
+    margin-bottom: 16px;
+    border-bottom: solid 1px #DEE4E6;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  &__ttl {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $ttl;
+    margin-bottom: 34px;
+    font-family: $dou-font;
+  }
+  &__ttl-sub {
+    font-size: 1.3rem;
+  }
+  &__excerpt {
+    font-size: 1.5rem;
+    line-height: 2.0;
+    color: $main-txt;
+  }
+  &__full {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    &.is-open {
+      max-height: 3000px;
+    }
+  }
+  &__content {
+    padding-top: 16px;
+    font-size: 1.5rem;
+    line-height: 2.0;
+    color: $main-txt;
+    text-align: left;
+    p {
+      margin-bottom: 12px;
+    }
+  }
+  &__toggle {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 1.3rem;
+    color: $point;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: $dou-font;
+    &::after {
+      content: ' ▾';
+    }
+    &.is-open::after {
+      content: ' ▴';
+    }
+  }
+  &__more {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 1.3rem;
+    color: $main-txt;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-family: $dou-font;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+  &__pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  &__desc {
+    font-size: 1.4rem;
+    color: $light-txt;
+    line-height: 2.0;
+    text-align: center;
+  }
+  &__empty {
+    font-size: 1.5rem;
+    color: $light-txt;
+    text-align: center;
+  }
+  &__ttl-link {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  &__detail-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  &__nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-decoration: none;
+    color: $main-txt;
+    font-family: $dou-font;
+    // SP: prevとnextで横幅を等分
+    flex: 1 1 calc(50% - 8px);
+    &--prev {
+      text-align: left;
+    }
+    &--next {
+      text-align: right;
+    }
+    &--list {
+      flex: 1 1 100%;
+      display: flex;
+      justify-content: center;
+      order: 1; // 下段に
+      white-space: nowrap;
+      max-width: 160px;
+      margin: 0 auto;
+      @include mq(tb) {
+        flex: 0 0 auto;
+        order: 0;
+        display: inline-block;
+        align-self: center;
+        margin: 0;
+      }
+    }
+    &.is-disabled {
+      pointer-events: none;
+      visibility: hidden;
+    }
+    &:hover &-date {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    @include mq(tb) {
+      flex: 0 1 auto;
+      min-width: 120px;
+    }
+  }
+  &__nav-label {
+    font-size: 1.3rem;
+    color: $light-txt;
+  }
+  &__nav-date {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: $ttl;
+    margin-top: 8px;
+  }
+  &__wrap--detail {
+    @include mq(tb) {
+      max-width: $tb-width - $top-side-margin * 2;
+      margin: 0 auto;
+    }
+    @include mq() {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  }
+  &__book--detail {
+    @include mq(tb) {
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: $kadomaru;
+      overflow: hidden;
+      border-bottom: solid 1px #DEE4E6;
+    }
+    @media screen and (min-width: 1200px) {
+      background-color: #fcfcfc;
+    }
+  }
+  &__page--detail {
+    @media screen and (min-width: 1200px) {
+      width: 100%;
+    }
+  }
+}
+
 .p-contact{
   text-align: center;
   padding-right: $top-side-margin;
@@ -1618,7 +1955,7 @@ p.p-form__submit{
     margin-right: auto;
   }
   @include mq() {
-    width: $pc-width - $top-side-margin-pc * 2;
+    width: $pc-width;
     padding-bottom:  32px + 87px; 
     background-size: 87px auto;
     background-position: center bottom;
@@ -1627,7 +1964,9 @@ p.p-form__submit{
   &__menu{
     @include mq() {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
+      gap: 0 0;
     }
   }
   &__list{

@@ -156,7 +156,41 @@
     <?php
       wp_reset_query();endif;
     ?>      
-    <p><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'blog' ); ?>">もっと見る</a></p>
+    <p><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'blog' ); ?>">もっと読む</a></p>
+  </section>
+  <section class="p-diary p-diary--top u-bg-dark pt64 pb64">
+    <h2 class="c-ttl c-ttl--en c-ttl--bar mb40">Diary</h2>
+    <?php
+      $diary_data = fetch_microcms_diary(2, 0);
+      if ($diary_data && !empty($diary_data['contents'])):
+        $entries     = $diary_data['contents'];
+        $date_counts = [];
+        $date_index  = [];
+        foreach ($entries as $e) {
+          $dk = (new DateTime($e['publishedAt']))->setTimezone(new DateTimeZone('Asia/Tokyo'))->format('Ymd');
+          $date_counts[$dk] = ($date_counts[$dk] ?? 0) + 1;
+        }
+    ?>
+    <div class="p-diary__book">
+      <?php foreach ($entries as $i => $entry):
+        $dk        = (new DateTime($entry['publishedAt']))->setTimezone(new DateTimeZone('Asia/Tokyo'))->format('Ymd');
+        $date_index[$dk] = ($date_index[$dk] ?? 0) + 1;
+        $num       = $date_counts[$dk] - $date_index[$dk] + 1;
+        $num_suf   = ($num > 1) ? ' <span class="p-diary__ttl-sub">その' . $num . '</span>' : '';
+        $diary_url = get_diary_url($dk, $num);
+        $content   = $entry['content'];
+        $excerpt   = mb_strimwidth(strip_tags($content), 0, 300, '...');
+        $page_cls  = ($i === 0) ? 'p-diary__page--new' : 'p-diary__page--prev';
+      ?>
+      <article class="p-diary__page <?php echo $page_cls; ?>">
+        <h3 class="p-diary__ttl"><a class="p-diary__ttl-link" href="<?php echo esc_url($diary_url); ?>"><?php echo esc_html(format_diary_date($entry['publishedAt'])); ?></a><?php echo $num_suf; ?></h3>
+        <div class="p-diary__excerpt"><?php echo esc_html($excerpt); ?></div>
+        <a class="p-diary__more" href="<?php echo esc_url($diary_url); ?>">続きを読む</a>
+      </article>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+    <p class="mt32"><a class="c-btn c-btn--normal" href="<?php echo home_url('/diary'); ?>">もっと読む</a></p>
   </section>
   <section class="p-works p-works--top u-bg pt64 pb64">
     <h2 class="c-ttl c-ttl--en c-ttl--bar mb40">Exhibition</h2>

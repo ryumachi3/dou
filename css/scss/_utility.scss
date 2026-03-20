@@ -13,3 +13,12 @@
     object-fit: cover;
     font-family: 'object-fit: cover;';
 }
+
+// Smartphone only: break-line element (<br>) のためのユーティリティ
+// 既定（スマホ想定）では改行が有効、タブレット以上では無効化する
+.u-sp-only{
+  display: inline;
+  @include mq('tb') {
+    display: none;
+  }
+}

@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('sass'));
 var pug = require('gulp-pug');
 var rename = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
@@ -36,7 +36,7 @@ gulp.task('pug', function() {
 gulp.task('browser-sync', function () {
     browserSync.init({
         // vccwで設定したipアドレス
-        proxy: "http://dou.wp/",
+        proxy: "http://dou.local/",
         open: true,
         watchOptions: {
             debounceDelay: 1000

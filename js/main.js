@@ -1,3 +1,17 @@
+// Diary accordion
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.js-diary-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var card = this.closest('.js-diary-card');
+      var full = card.querySelector('.p-diary__full');
+      var isOpen = full.classList.contains('is-open');
+      full.classList.toggle('is-open');
+      this.classList.toggle('is-open');
+      this.textContent = isOpen ? '続きを読む' : '閉じる';
+    });
+  });
+});
+
 const TB = 560;
 const PC = 960;
 
@@ -48,6 +62,7 @@ new Vue({
     isWorksPage: false,
     isBlogPage: false,
     isExhibitionPage: false,
+    isDiaryPage: false,
     isAboutPage: false,
     isContactPage: false,
     isBreadcrumbDown: false,
@@ -89,6 +104,8 @@ new Vue({
         this.isBlogPage = true;
       } else if (location.pathname.substr(0,11) == '/Exhibition' || location.pathname.substr(0,11) == '/exhibition' ) {
         this.isExhibitionPage = true;
+      } else if (location.pathname.substr(0,6) == '/diary' || location.pathname.substr(0,6) == '/Diary' ) {
+        this.isDiaryPage = true;
       } else if (location.pathname.substr(0,6) == '/About' || location.pathname.substr(0,6) == '/about' ) {
         this.isAboutPage = true;
       } else if (location.pathname.substr(0,8) == '/Contact' || location.pathname.substr(0,8) == '/contact' ) {

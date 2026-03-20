@@ -1,5 +1,236 @@
 <?php
 
+// microCMS
+define('MICROCMS_API_KEY', '04oMfTUtCvsb0CWmQneoJuXum6W1iYqgtETJ');
+
+function format_diary_date($date_str) {
+  $days = ['日', '月', '火', '水', '木', '金', '土'];
+  $date = new DateTime($date_str);
+  $date->setTimezone(new DateTimeZone('Asia/Tokyo'));
+  $month = $date->format('n');
+  $day = $date->format('j');
+  $dow = $days[(int)$date->format('w')];
+  return "{$month}月{$day}日({$dow})";
+}
+
+function fetch_microcms_diary($limit = 10, $offset = 0) {
+  $url = "https://dou.microcms.io/api/v1/diary?limit={$limit}&offset={$offset}&orders=-publishedAt";
+  $response = wp_remote_get($url, array(
+    'headers' => array('X-MICROCMS-API-KEY' => MICROCMS_API_KEY)
+  ));
+  if (is_wp_error($response)) return null;
+  return json_decode(wp_remote_retrieve_body($response), true);
+}
+
+// 指定JST日付(Ymd)の全エントリを取得（古い順）
+// wp_remote_get がブラケットをURLエンコードしてmicroCMSのfilterが効かないため
+// 全件取得してPHP側で日付フィルタリングする
+function get_diary_entries_for_date($ymd) {
+  $tz   = new DateTimeZone('Asia/Tokyo');
+  $data = fetch_microcms_diary(100, 0);
+  if (!$data || empty($data['contents'])) return [];
+  $result = [];
+  foreach ($data['contents'] as $e) {
+    $d = new DateTime($e['publishedAt']);
+    $d->setTimezone($tz);
+    if ($d->format('Ymd') === $ymd) {
+      $result[] = $e;
+    }
+  }
+  // 古い順（publishedAt ASC）に並べる
+  usort($result, function($a, $b) {
+    return strcmp($a['publishedAt'], $b['publishedAt']);
+  });
+  return $result;
+}
+
+// 指定日付のN番目のエントリを取得（num=1が最古）
+function get_diary_entry_by_date($ymd, $num = 1) {
+  $entries = get_diary_entries_for_date($ymd);
+  return $entries[intval($num) - 1] ?? null;
+}
+
+// 日記詳細ページのURL生成
+function get_diary_url($ymd, $num = 1) {
+  $base = home_url('/diary/' . $ymd);
+  return ($num > 1) ? $base . '-' . $num : $base;
+}
+
+// 前後の日記エントリを返す（newest-firstの全件リストから検索）
+// 戻り値: ['prev' => [...], 'next' => [...]]  prev=古い、next=新しい
+function get_diary_prev_next($ymd, $num) {
+  $data = fetch_microcms_diary(100, 0);
+  if (!$data || empty($data['contents'])) return [null, null];
+
+  $tz          = new DateTimeZone('Asia/Tokyo');
+  $entries     = $data['contents']; // 新しい順
+  $date_totals = [];
+  foreach ($entries as $e) {
+    $dk = (new DateTime($e['publishedAt']))->setTimezone($tz)->format('Ymd');
+    $date_totals[$dk] = ($date_totals[$dk] ?? 0) + 1;
+  }
+  $date_seen = [];
+  $indexed   = [];
+  foreach ($entries as $e) {
+    $dk = (new DateTime($e['publishedAt']))->setTimezone($tz)->format('Ymd');
+    $date_seen[$dk] = ($date_seen[$dk] ?? 0) + 1;
+    $n = $date_totals[$dk] - $date_seen[$dk] + 1;
+    $indexed[] = ['ymd' => $dk, 'num' => $n, 'entry' => $e];
+  }
+
+  $current_idx = null;
+  foreach ($indexed as $i => $item) {
+    if ($item['ymd'] === $ymd && $item['num'] === intval($num)) {
+      $current_idx = $i;
+      break;
+    }
+  }
+  if ($current_idx === null) return [null, null];
+
+  // 新しい順配列なので index-1=新しい(next)、index+1=古い(prev)
+  $next = ($current_idx > 0) ? $indexed[$current_idx - 1] : null;
+  $prev = isset($indexed[$current_idx + 1]) ? $indexed[$current_idx + 1] : null;
+  return [$prev, $next];
+}
+
+// ページタイトル生成
+function get_site_title() {
+  $site = get_bloginfo('name');
+
+  // 日記詳細ページ
+  $diary_date = get_query_var('diary_date');
+  if ($diary_date) {
+    $ymd   = preg_replace('/[^0-9]/', '', $diary_date);
+    $num   = max(1, intval(get_query_var('diary_num') ?: 1));
+    $entry = get_diary_entry_by_date($ymd, $num);
+    if ($entry) {
+      $label = format_diary_date($entry['publishedAt']);
+      if ($num > 1) $label .= ' その' . $num;
+      return esc_html($label) . ' | ' . $site;
+    }
+  }
+
+  // 日記アーカイブページ
+  if (is_page('diary')) return '日記の一覧 | ' . $site;
+
+  // カスタム投稿タイプアーカイブ
+  if (is_post_type_archive('Works'))      return 'Works | ' . $site;
+  if (is_post_type_archive('Blog'))       return 'Blog | ' . $site;
+  if (is_post_type_archive('Exhibition')) return 'Exhibition | ' . $site;
+
+  // 投稿・固定ページ詳細（タイトルあり）
+  if (is_singular() && get_the_title()) return esc_html(get_the_title()) . ' | ' . $site;
+
+  return $site;
+}
+
+// リライトルール登録
+add_action('init', function() {
+  // OGP画像エンドポイント: /diary/ogp/YYYYMMDD.png or /diary/ogp/YYYYMMDD-N.png
+  add_rewrite_rule(
+    '^diary/ogp/([0-9]{8})-([0-9]+)\.png$',
+    'index.php?pagename=diary&diary_ogp=1&diary_date=$matches[1]&diary_num=$matches[2]',
+    'top'
+  );
+  add_rewrite_rule(
+    '^diary/ogp/([0-9]{8})\.png$',
+    'index.php?pagename=diary&diary_ogp=1&diary_date=$matches[1]&diary_num=1',
+    'top'
+  );
+  // 詳細ページ: /diary/YYYYMMDD-N or /diary/YYYYMMDD
+  add_rewrite_rule(
+    '^diary/([0-9]{8})-([0-9]+)/?$',
+    'index.php?pagename=diary&diary_date=$matches[1]&diary_num=$matches[2]',
+    'top'
+  );
+  add_rewrite_rule(
+    '^diary/([0-9]{8})/?$',
+    'index.php?pagename=diary&diary_date=$matches[1]&diary_num=1',
+    'top'
+  );
+});
+
+// クエリvar登録
+add_filter('query_vars', function($vars) {
+  $vars[] = 'diary_date';
+  $vars[] = 'diary_num';
+  $vars[] = 'diary_ogp';
+  return $vars;
+});
+
+// OGP画像リクエストをインターセプト
+add_action('template_redirect', function() {
+  if (!get_query_var('diary_ogp')) return;
+  $ymd = preg_replace('/[^0-9]/', '', get_query_var('diary_date'));
+  $num = max(1, intval(get_query_var('diary_num')));
+  if (strlen($ymd) !== 8) wp_die('Invalid date', 404);
+
+  $entry = get_diary_entry_by_date($ymd, $num);
+  $label = $entry ? format_diary_date($entry['publishedAt']) : $ymd;
+
+  diary_output_ogp_image($label);
+  exit;
+});
+
+// OGP画像生成（PHP GD）
+function diary_output_ogp_image($date_label) {
+  $w = 1200; $h = 630;
+  $img = imagecreatetruecolor($w, $h);
+
+  $bg      = imagecolorallocate($img, 252, 252, 252);
+  $line_c  = imagecolorallocate($img, 222, 228, 230);
+  $txt_c   = imagecolorallocate($img, 51,  51,  51);
+
+  imagefill($img, 0, 0, $bg);
+
+  // 罫線（タイトルエリア以下から）
+  $line_h  = 30;
+  $title_h = 80;
+  for ($y = $title_h + $line_h; $y < $h; $y += $line_h) {
+    imageline($img, 40, $y, $w - 40, $y, $line_c);
+  }
+
+  // 日付テキスト
+  $font = get_template_directory() . '/fonts/BIZUDGothic-Bold.ttf';
+  if (file_exists($font)) {
+    $font_size = 52;
+    $bbox = imagettfbbox($font_size, 0, $font, $date_label);
+    $tw = $bbox[2] - $bbox[0];
+    $tx = ($w - $tw) / 2;
+    $ty = $title_h - 12;
+    imagettftext($img, $font_size, 0, $tx, $ty, $txt_c, $font, $date_label);
+  }
+
+  header('Content-Type: image/png');
+  header('Cache-Control: public, max-age=86400');
+  imagepng($img);
+}
+
+// wp_head: OGPメタタグ出力
+add_action('wp_head', function() {
+  $diary_date = get_query_var('diary_date');
+  if (!$diary_date) return;
+  $ymd = preg_replace('/[^0-9]/', '', $diary_date);
+  $num = max(1, intval(get_query_var('diary_num') ?: 1));
+  if (strlen($ymd) !== 8) return;
+
+  $entry = get_diary_entry_by_date($ymd, $num);
+  if (!$entry) return;
+
+  $title    = format_diary_date($entry['publishedAt']);
+  $num_suf  = ($num > 1) ? '-' . $num : '';
+  $ogp_url  = home_url("/diary/ogp/{$ymd}{$num_suf}.png");
+  $page_url = get_diary_url($ymd, $num);
+  $excerpt  = mb_strimwidth(strip_tags($entry['content']), 0, 120, '…');
+
+  echo '<meta property="og:title" content="' . esc_attr($title) . ' | Diary | DOU" />' . "\n";
+  echo '<meta property="og:description" content="' . esc_attr($excerpt) . '" />' . "\n";
+  echo '<meta property="og:url" content="' . esc_attr($page_url) . '" />' . "\n";
+  echo '<meta property="og:image" content="' . esc_attr($ogp_url) . '" />' . "\n";
+  echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+  echo '<meta name="twitter:image" content="' . esc_attr($ogp_url) . '" />' . "\n";
+});
+
 // カスタム投稿タイプの１ページの最大表示件数
 /*function change_posts_per_page($query) {
     if ( is_admin() || ! $query->is_main_query() ){

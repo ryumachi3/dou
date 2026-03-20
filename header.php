@@ -22,9 +22,9 @@
   <!-- End Google Tag Manager -->
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?php bloginfo('name'); ?></title>
+  <title><?php echo get_site_title(); ?></title>
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-  <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/style.css?ver=0.0.8" type="text/css">
+  <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/style.css?ver=<?php echo filemtime(get_template_directory() . '/css/style.css'); ?>" type="text/css">
   <?php wp_head(); ?>
   <link rel="SHORTCUT ICON" href="<?php bloginfo('template_url'); ?>/img/DOU-favicon.ico" />
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

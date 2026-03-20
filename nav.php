@@ -1,4 +1,3 @@
-
 <header class="is-zidx20" id="header" :class="[isTopPage ? '' : 'p-header--white',isBreadcrumbDown || isPC &amp;&amp; !isTopPage ? 'p-header--border' : '']">
   <?php if(is_home() || is_front_page()): ?>
   <h1 class="c-header-logo p-header-logo is-zidx10" :class="[ isDown || isMenu &amp;&amp; !isPC ? 'is-display-block' : '' ]"><a class="c-header-logo__link" href="<?php echo (is_home() || is_front_page() )? '#top': '/' ?>">
@@ -17,6 +16,7 @@
       <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="/" :class="[ isTopPage ? 'p-gnav__menu__link--bar' : '' ]">Home</a></li>
       <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="<?php echo get_post_type_archive_link( 'works' ); ?>" :class="[ isWorksPage ? 'p-gnav__menu__link--bar' : '' ]">Works</a></li>
       <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="<?php echo get_post_type_archive_link( 'blog' ); ?>" :class="[ isBlogPage ? 'p-gnav__menu__link--bar' : '' ]" >Blog</a></li>
+      <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="<?php echo home_url( '/diary' ); ?>" :class="[ isDiaryPage ? 'p-gnav__menu__link--bar' : '' ]">Diary</a></li>
       <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="<?php echo get_post_type_archive_link( 'exhibition' ); ?>" :class="[ isExhibitionPage ? 'p-gnav__menu__link--bar' : '' ]" >Exhibition</a></li>
       <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="<?php echo home_url( '/about' ); ?>" :class="[ isAboutPage ? 'p-gnav__menu__link--bar' : '' ]" >About</a></li>
       <li class="p-gnav__menu__item"><a class="p-gnav__menu__link" href="<?php echo home_url( '/contact' ); ?>" :class="[ isContactPage ? 'p-gnav__menu__link--bar' : '' ]">Contact</a></li>
