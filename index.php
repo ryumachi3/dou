@@ -159,7 +159,7 @@
     <p><a class="c-btn c-btn--normal" href="<?php echo get_post_type_archive_link( 'blog' ); ?>">もっと読む</a></p>
   </section>
   <section class="p-diary p-diary--top u-bg-dark pt64 pb64">
-    <h2 class="c-ttl c-ttl--en c-ttl--bar mb40">Diary★</h2>
+    <h2 class="c-ttl c-ttl--en c-ttl--bar mb40">Diary</h2>
     <?php
       $diary_data = fetch_microcms_diary(2, 0);
       if ($diary_data && !empty($diary_data['contents'])):
