@@ -22,9 +22,15 @@ jobs:
         run: |
           # SSHキーをセット
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p 10022 "$REMOTE_HOST" >> ~/.ssh/known_hosts
+
+          # SSH接続テスト
+          ssh -p 10022 -i ~/.ssh/id_rsa \
+            -o StrictHostKeyChecking=no \
+            -v \
+            "$REMOTE_USER@$REMOTE_HOST" "echo SSH_OK" 2>&1 | tail -30
 
           # テーマファイルをrsyncで転送
           # node_modules と .git は除外
