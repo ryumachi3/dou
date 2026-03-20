@@ -1886,6 +1886,16 @@
   }
 }
 
+.p-diary__page + .p-diary__page{
+  margin-top: 16px;
+}
+
+@media screen and (min-width: 1200px) {
+  .p-diary__page + .p-diary__page{
+    margin-top: 0;
+  }
+}
+
 .p-contact{
   text-align: center;
   padding-right: $top-side-margin;

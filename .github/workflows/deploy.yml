@@ -1,0 +1,37 @@
+name: Deploy to XServer
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via rsync over SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.XSERVER_SSH_KEY }}
+          REMOTE_HOST:     ${{ secrets.XSERVER_HOST }}
+          REMOTE_USER:     ${{ secrets.XSERVER_USER }}
+          REMOTE_PATH:     ${{ secrets.XSERVER_PATH }}
+        run: |
+          # SSHキーをセット
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 10022 "$REMOTE_HOST" >> ~/.ssh/known_hosts
+
+          # テーマファイルをrsyncで転送
+          # node_modules と .git は除外
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            -e "ssh -p 10022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
+            ./ \
+            "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
