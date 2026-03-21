@@ -126,17 +126,6 @@ function get_site_title() {
 
 // リライトルール登録
 add_action('init', function() {
-  // OGP画像エンドポイント: /diary/ogp/YYYYMMDD.png or /diary/ogp/YYYYMMDD-N.png
-  add_rewrite_rule(
-    '^diary/ogp/([0-9]{8})-([0-9]+)\.png$',
-    'index.php?pagename=diary&diary_ogp=1&diary_date=$matches[1]&diary_num=$matches[2]',
-    'top'
-  );
-  add_rewrite_rule(
-    '^diary/ogp/([0-9]{8})\.png$',
-    'index.php?pagename=diary&diary_ogp=1&diary_date=$matches[1]&diary_num=1',
-    'top'
-  );
   // 詳細ページ: /diary/YYYYMMDD-N or /diary/YYYYMMDD
   add_rewrite_rule(
     '^diary/([0-9]{8})-([0-9]+)/?$',
@@ -154,105 +143,8 @@ add_action('init', function() {
 add_filter('query_vars', function($vars) {
   $vars[] = 'diary_date';
   $vars[] = 'diary_num';
-  $vars[] = 'diary_ogp';
   return $vars;
 });
-
-// OGP画像リクエストをインターセプト
-add_action('template_redirect', function() {
-  if (!get_query_var('diary_ogp')) return;
-  $ymd = preg_replace('/[^0-9]/', '', get_query_var('diary_date'));
-  $num = max(1, intval(get_query_var('diary_num')));
-  if (strlen($ymd) !== 8) wp_die('Invalid date', 404);
-
-  $entry = get_diary_entry_by_date($ymd, $num);
-  $label = $entry ? format_diary_date($entry['publishedAt']) : $ymd;
-  if ($num > 1) $label .= ' その' . $num;
-  $body  = $entry ? strip_tags($entry['content'] ?? '') : '';
-
-  diary_output_ogp_image($label, $body);
-  exit;
-});
-
-// テキストを最大幅で折り返す（日本語対応）
-function ogp_wrap_text($text, $font, $size, $max_w) {
-  $lines = [];
-  $current = '';
-  $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
-  foreach ($chars as $ch) {
-    $test = $current . $ch;
-    $bbox = imagettfbbox($size, 0, $font, $test);
-    if (($bbox[2] - $bbox[0]) > $max_w && $current !== '') {
-      $lines[] = $current;
-      $current = $ch;
-    } else {
-      $current = $test;
-    }
-  }
-  if ($current !== '') $lines[] = $current;
-  return $lines;
-}
-
-// OGP画像生成（PHP GD）
-function diary_output_ogp_image($date_label, $body_text = '') {
-  $w = 1200; $h = 630;
-  $pad_x = 70;
-  $img = imagecreatetruecolor($w, $h);
-
-  $bg     = imagecolorallocate($img, 252, 252, 252);
-  $line_c = imagecolorallocate($img, 222, 228, 230);
-  $txt_c  = imagecolorallocate($img, 51,  51,  51);
-  $sub_c  = imagecolorallocate($img, 90,  90,  90);
-
-  imagefill($img, 0, 0, $bg);
-
-  $font      = get_template_directory() . '/fonts/BIZUDGothic-Bold.ttf';
-  $font_reg  = file_exists(get_template_directory() . '/fonts/BIZUDGothic-Regular.ttf')
-               ? get_template_directory() . '/fonts/BIZUDGothic-Regular.ttf'
-               : $font;
-
-  if (!file_exists($font)) {
-    header('Content-Type: image/png');
-    imagepng($img);
-    return;
-  }
-
-  // --- 日付タイトル ---
-  $title_size = 46;
-  $title_y    = 90;
-  imagettftext($img, $title_size, 0, $pad_x, $title_y, $txt_c, $font, $date_label);
-
-  // --- 区切り線 ---
-  $sep_y = $title_y + 24;
-  imageline($img, $pad_x, $sep_y, $w - $pad_x, $sep_y, $line_c);
-
-  // --- 本文テキスト ---
-  if ($body_text !== '') {
-    $body_size    = 26;
-    $line_height  = 46;
-    $text_w       = $w - $pad_x * 2;
-    $body_y_start = $sep_y + 48;
-    $max_lines    = 8;
-
-    $lines = ogp_wrap_text($body_text, $font_reg, $body_size, $text_w);
-
-    // 最大行数を超えたら最終行に「…」を追加
-    if (count($lines) > $max_lines) {
-      $lines = array_slice($lines, 0, $max_lines);
-      $lines[$max_lines - 1] = mb_substr($lines[$max_lines - 1], 0, -1) . '…';
-    }
-
-    foreach ($lines as $i => $line) {
-      $y = $body_y_start + $i * $line_height;
-      if ($y + $body_size > $h - 40) break;
-      imagettftext($img, $body_size, 0, $pad_x, $y, $sub_c, $font_reg, $line);
-    }
-  }
-
-  header('Content-Type: image/png');
-  header('Cache-Control: public, max-age=86400');
-  imagepng($img);
-}
 
 // wp_head: OGPメタタグ出力
 add_action('wp_head', function() {
@@ -266,8 +158,8 @@ add_action('wp_head', function() {
   if (!$entry) return;
 
   $title    = format_diary_date($entry['publishedAt']);
-  $num_suf  = ($num > 1) ? '-' . $num : '';
-  $ogp_url  = home_url("/diary/ogp/{$ymd}{$num_suf}.png");
+  if ($num > 1) $title .= ' その' . $num;
+  $ogp_url  = get_template_directory_uri() . '/img/ogp_diary.png';
   $page_url = get_diary_url($ymd, $num);
   $excerpt  = mb_strimwidth(strip_tags($entry['content']), 0, 120, '…');
 
