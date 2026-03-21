@@ -111,7 +111,7 @@ function get_site_title() {
   }
 
   // 日記アーカイブページ
-  if (is_page('diary')) return '日記の一覧 | ' . $site;
+  if (is_page('diary')) return '日誌ではなく、日記。 | ' . $site;
 
   // カスタム投稿タイプアーカイブ
   if (is_post_type_archive('Works'))      return 'Works | ' . $site;
