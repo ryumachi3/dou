@@ -163,7 +163,7 @@ add_action('wp_head', function() {
   $page_url = get_diary_url($ymd, $num);
   $excerpt  = mb_strimwidth(strip_tags($entry['content']), 0, 120, '…');
 
-  echo '<meta property="og:title" content="' . esc_attr($title) . ' | Diary | DOU" />' . "\n";
+  echo '<meta property="og:title" content="' . esc_attr($title) . '" />' . "\n";
   echo '<meta property="og:description" content="' . esc_attr($excerpt) . '" />' . "\n";
   echo '<meta property="og:url" content="' . esc_attr($page_url) . '" />' . "\n";
   echo '<meta property="og:image" content="' . esc_attr($ogp_url) . '" />' . "\n";
