@@ -167,38 +167,86 @@ add_action('template_redirect', function() {
 
   $entry = get_diary_entry_by_date($ymd, $num);
   $label = $entry ? format_diary_date($entry['publishedAt']) : $ymd;
+  if ($num > 1) $label .= ' その' . $num;
+  $body  = $entry ? strip_tags($entry['content'] ?? '') : '';
 
-  diary_output_ogp_image($label);
+  diary_output_ogp_image($label, $body);
   exit;
 });
 
+// テキストを最大幅で折り返す（日本語対応）
+function ogp_wrap_text($text, $font, $size, $max_w) {
+  $lines = [];
+  $current = '';
+  $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
+  foreach ($chars as $ch) {
+    $test = $current . $ch;
+    $bbox = imagettfbbox($size, 0, $font, $test);
+    if (($bbox[2] - $bbox[0]) > $max_w && $current !== '') {
+      $lines[] = $current;
+      $current = $ch;
+    } else {
+      $current = $test;
+    }
+  }
+  if ($current !== '') $lines[] = $current;
+  return $lines;
+}
+
 // OGP画像生成（PHP GD）
-function diary_output_ogp_image($date_label) {
+function diary_output_ogp_image($date_label, $body_text = '') {
   $w = 1200; $h = 630;
+  $pad_x = 70;
   $img = imagecreatetruecolor($w, $h);
 
-  $bg      = imagecolorallocate($img, 252, 252, 252);
-  $line_c  = imagecolorallocate($img, 222, 228, 230);
-  $txt_c   = imagecolorallocate($img, 51,  51,  51);
+  $bg     = imagecolorallocate($img, 252, 252, 252);
+  $line_c = imagecolorallocate($img, 222, 228, 230);
+  $txt_c  = imagecolorallocate($img, 51,  51,  51);
+  $sub_c  = imagecolorallocate($img, 90,  90,  90);
 
   imagefill($img, 0, 0, $bg);
 
-  // 罫線（タイトルエリア以下から）
-  $line_h  = 30;
-  $title_h = 80;
-  for ($y = $title_h + $line_h; $y < $h; $y += $line_h) {
-    imageline($img, 40, $y, $w - 40, $y, $line_c);
+  $font      = get_template_directory() . '/fonts/BIZUDGothic-Bold.ttf';
+  $font_reg  = file_exists(get_template_directory() . '/fonts/BIZUDGothic-Regular.ttf')
+               ? get_template_directory() . '/fonts/BIZUDGothic-Regular.ttf'
+               : $font;
+
+  if (!file_exists($font)) {
+    header('Content-Type: image/png');
+    imagepng($img);
+    return;
   }
 
-  // 日付テキスト
-  $font = get_template_directory() . '/fonts/BIZUDGothic-Bold.ttf';
-  if (file_exists($font)) {
-    $font_size = 52;
-    $bbox = imagettfbbox($font_size, 0, $font, $date_label);
-    $tw = $bbox[2] - $bbox[0];
-    $tx = ($w - $tw) / 2;
-    $ty = $title_h - 12;
-    imagettftext($img, $font_size, 0, $tx, $ty, $txt_c, $font, $date_label);
+  // --- 日付タイトル ---
+  $title_size = 46;
+  $title_y    = 90;
+  imagettftext($img, $title_size, 0, $pad_x, $title_y, $txt_c, $font, $date_label);
+
+  // --- 区切り線 ---
+  $sep_y = $title_y + 24;
+  imageline($img, $pad_x, $sep_y, $w - $pad_x, $sep_y, $line_c);
+
+  // --- 本文テキスト ---
+  if ($body_text !== '') {
+    $body_size    = 26;
+    $line_height  = 46;
+    $text_w       = $w - $pad_x * 2;
+    $body_y_start = $sep_y + 48;
+    $max_lines    = 8;
+
+    $lines = ogp_wrap_text($body_text, $font_reg, $body_size, $text_w);
+
+    // 最大行数を超えたら最終行に「…」を追加
+    if (count($lines) > $max_lines) {
+      $lines = array_slice($lines, 0, $max_lines);
+      $lines[$max_lines - 1] = mb_substr($lines[$max_lines - 1], 0, -1) . '…';
+    }
+
+    foreach ($lines as $i => $line) {
+      $y = $body_y_start + $i * $line_height;
+      if ($y + $body_size > $h - 40) break;
+      imagettftext($img, $body_size, 0, $pad_x, $y, $sub_c, $font_reg, $line);
+    }
   }
 
   header('Content-Type: image/png');
