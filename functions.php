@@ -148,6 +148,21 @@ add_filter('query_vars', function($vars) {
 
 // wp_head: OGPメタタグ出力
 add_action('wp_head', function() {
+  $ogp_url  = get_template_directory_uri() . '/img/ogp_diary.png';
+  $diary_desc = 'その日あったことではなくて、忘れたくない感覚や考えたことを残しておくメモのようなもの。';
+
+  // 日記アーカイブページ
+  if (is_page('diary') && !get_query_var('diary_date')) {
+    echo '<meta name="description" content="' . esc_attr($diary_desc) . '" />' . "\n";
+    echo '<meta property="og:title" content="日誌ではなく、日記。" />' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($diary_desc) . '" />' . "\n";
+    echo '<meta property="og:url" content="' . esc_attr(home_url('/diary')) . '" />' . "\n";
+    echo '<meta property="og:image" content="' . esc_attr($ogp_url) . '" />' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+    echo '<meta name="twitter:image" content="' . esc_attr($ogp_url) . '" />' . "\n";
+    return;
+  }
+
   $diary_date = get_query_var('diary_date');
   if (!$diary_date) return;
   $ymd = preg_replace('/[^0-9]/', '', $diary_date);
