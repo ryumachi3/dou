@@ -2463,7 +2463,7 @@ input[type=button] {
   font-weight: 300;
   text-align: left;
 }
-.p-form--must::after {
+.p-form--must p::after {
   position: absolute;
   display: inline-block;
   content: "必須";
